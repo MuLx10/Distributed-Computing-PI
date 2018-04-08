@@ -1,0 +1,51 @@
+import socket  
+             # Import socket module
+import sys  
+
+reload(sys)  
+sys.setdefaultencoding('utf8')
+def p_recv(s):
+	ll =[]
+	l = s.split(':')
+	for i in l:
+		k = i.split(',')
+        try:
+		  ll.append((k[0],k[1]))
+        except:
+          pass
+	return ll
+
+def word_tokenize(p):
+    s = socket.socket()         # Create a socket object
+    host = '10.145.140.103' # Get local machine name
+    port = 12344              # Reserve a port for your service.
+
+    s.connect((host, port))
+    s.send('wt:'+str(p))
+    data = s.recv(1024)
+    if data == 'error':
+        return 'error'
+    #print data
+    s.close  
+    data = data.split('>')
+    #print(len(data))
+    return data
+
+def pos_tag(p):
+    s = socket.socket()         # Create a socket object
+    host = '10.145.140.103' # Get local machine name
+    port = 12344              # Reserve a port for your service.
+    #p = ','.join(p)
+    s.connect((host, port))
+    s.send('ps:'+str(p))
+    data = s.recv(1024)
+    if data == 'error':
+        return 'error'
+    #print data
+    s.close  
+    return p_recv(data)
+
+#print pos_tag(['hi','how', 'r', 'u'])
+#print word_tokenize('hi how r u')
+#print pos_tag('hi how r u')
+
